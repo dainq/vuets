@@ -1,22 +1,52 @@
 <template>
-  <v-chart :options="pie" />
+<div>
+  <v-chart class="chart" :option="pie" />
+</div>
+
 </template>
+<style scoped>
+.chart {
+  height: 100vh;
+}
+</style>
 
-
+<style>
+body {
+  margin: 0;
+}
+</style>
 <script>
-import ECharts from "vue-echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { PieChart } from "echarts/charts";
+import VChart, { THEME_KEY } from "vue-echarts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+} from "echarts/components";
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+]);
+
 import "echarts/lib/chart/pie";
 
 export default {
-  components: {
-    "v-chart": ECharts,
+  name:"pie",
+   components: {
+    VChart
   },
   data() {
     return {
       pie: {
-        title: {
-          text: "饼图程序调用高亮示例",
-          x: "center",
+         title: {
+          text: "Traffic Sources",
+          left: "center"
         },
         tooltip: {
           trigger: "item",
@@ -54,14 +84,3 @@ export default {
   },
 };
 </script>
-<style>
-/**
- * The default size is 600px×400px, for responsive charts
- * you may need to set percentage values as follows (also
- * don't forget to provide a size for the container).
- */
-.echarts {
-  width: 100%;
-  height: 100%;
-}
-</style>
