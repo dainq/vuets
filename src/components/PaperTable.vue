@@ -9,11 +9,11 @@
     <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
         <td v-for="(column, index) in columns"
-            :key="index"
-            v-if="hasValue(item, column)">
+            :key="index" >
           {{itemValue(item, column)}}
         </td>
       </slot>
+      <button @click:"deleteTicker()">delete</button>
     </tr>
     </tbody>
   </table>
@@ -47,7 +47,11 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
-      return item[column.toLowerCase()];
+      return item[column];
+    },
+    DeleteTicker(ticker){
+      this.$parent.deleteTickerfrom(ticker)
+
     }
   }
 };

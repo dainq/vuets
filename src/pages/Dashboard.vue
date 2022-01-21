@@ -2,37 +2,46 @@
   <div>
     <!--input ticker cards-->
 
-    <form>
-      <label for="fname">Input ticker </label>
-      <input v-model="ticker" type="text" id="fname" name="fname" /><br /><br />
-      <p>{{ tickerFullName }}</p>
-      <button type="button" @click="getTickerData">Search</button>
-    </form>
+    <label for="fname">Input ticker </label>
+    <input
+      v-model="ticker"
+      @keyup.enter="getTickerData"
+      type="text"
+      id="fname"
+      name="fname"
+    /><br /><br />
+    <!-- <p>{{ list }}</p> -->
+    <p>Select portfolio</p>
+    <select v-model="PortfolioName">
+            <option selected disabled value="" >Portfolio</option>
+            <option v-for="l in PortfolioList"  :key="l.id">
+                {{ l }}
+            </option>
+    </select>
     <!--Charts-->
-    <CandleStick :option="option"/>
-    <ul>
-      <p>list</p>
-      <li v-for="record in tickerData" :key="record.Date">
-        {{ record.PriceOpen }}
-        {{ record.PriceClose }}
-        {{ record.PriceLow }}
-        {{ record.PriceHigh }}
-      </li>
-    </ul> -->
-    <div>{{option}}</div>
+    <TableList :PortfolioName="PortfolioName" />
+    <CandleStick :option="option" />
+
+
+    <div>{{ option }}</div>
   </div>
 </template>
 <script>
 import axios from "axios";
 import { StatsCard, ChartCard, Button } from "@/components/index";
-import Pie from "./chart/Pie.vue";
+import TableList from '@/pages/TableList';
 import CandleStick from "./chart/CandleStick.vue";
-import Pie2 from "./chart/Pie2.vue";
+
+var today = new Date();
+console.log(today.getDate());
+var todayString =
+  today.getFullYear() + "-" + today.getMonth() + 1 + "-" + today.getDate();
+
+var listPortfolio = ["A","B","C","D","E","F","G","H"]
+
 function processData(rawData) {
   console.log("processData");
-  console.log(rawData);
   let xAxis = [];
-
   let yAxis = [];
   let data = [];
   for (var record in rawData) {
@@ -45,10 +54,9 @@ function processData(rawData) {
     ]);
   }
   console.log(xAxis);
-
   return {
     xAxis: {
-      data:xAxis
+      data: xAxis,
     },
     yAxis: {},
     series: [
@@ -58,15 +66,15 @@ function processData(rawData) {
       },
     ],
   };
-}
+};
+
 export default {
   components: {
     Button,
-    Pie,
     StatsCard,
     ChartCard,
     CandleStick,
-    Pie2,
+    TableList
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
@@ -74,11 +82,19 @@ export default {
    */
   data() {
     return {
-      ticker: "VIC",
+      ticker: "Vnindex",
       tickerFullName: "",
       tickerData: [],
       option: {},
+      PortfolioList: listPortfolio,
+      PortfolioName: "A",
     };
+  },
+  created() {
+    console.log("call")
+    console.log(this.list)
+  },
+  compute: {
   },
   methods: {
     searchTicker() {
@@ -92,7 +108,7 @@ export default {
       });
       const res = instance
         .get(
-          `https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=${this.ticker}&startDate=2021-12-12&endDate=2022-1-12`,
+          `https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=${this.ticker}&startDate=2021-01-12&endDate=${todayString}`,
           {
             Connection: "keep-alive",
             "sec-ch-ua":
@@ -117,8 +133,17 @@ export default {
           console.log("set data");
           this.tickerData = response.data;
           this.option = processData(this.tickerData);
-          console.log(this.option)
+          if (this.tickerData.length == 0) {
+            alert("ticker not found");
+          }
+          console.log(this.option);
         });
+    },
+    onEnter() {
+      console.log("onEnter");
+    },
+    addTickerToPortfolioList() {
+      //query data from database get ticker list
     },
   },
 };

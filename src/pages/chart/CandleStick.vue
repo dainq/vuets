@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-chart class="chart" :option="candlestick" />
+
+    <v-chart class="chart" :option="option" />
+
   </div>
 </template>
 <style scoped>
@@ -45,10 +47,16 @@ export default {
   props: {
     option: Object,
   },
+  watch: {
+    candlestick:function(){
+      console.log("propchange")
+    }
+  },
+
+
 
   data() {
     return {
-      candlestick:this.option ,
     };
   },
 };
