@@ -1,37 +1,23 @@
-{ "A": [{
-    "id": 1,
-    "TickerName": "vnd",
-    "CurrentPrice": "$36.738",
-    "HoldingVolume": 19
-  },
-  {
-    "id": 1,
-    "TickerName": "vnd",
-    "CurrentPrice": "$36.738",
-    "HoldingVolume": 19
-  },
-  {
-    "id": 1,
-    "TickerName": "vnd",
-    "CurrentPrice": "$36.738",
-    "HoldingVolume": 19
-  }],
- "B": [{
-    "id": 1,
-    "TickerName": "flc",
-    "CurrentPrice": "$36.738",
-    "HoldingVolume": 1000
-  },
-  {
-    "id": 1,
-    "TickerName": "nkg",
-    "CurrentPrice": "$36.738",
-    "HoldingVolume": 19
-  },
-  {
-    "id": 1,
-    "TickerName": "vnd",
-    "CurrentPrice": "$36.738",
-    "HoldingVolume": 19
-  }]
+{
+  "A": [
+    {
+      "id": 1,
+      "TickerName": "vnd",
+      "CurrentPrice": "$36.738",
+      "HoldingVolume": 19
+    },
+    {
+      "id": 1,
+      "TickerName": "vnd",
+      "CurrentPrice": "$36.738",
+      "HoldingVolume": 19
+    },
+    {
+      "id": 1,
+      "TickerName": "vnd",
+      "CurrentPrice": "$36.738",
+      "HoldingVolume": 19
+    }
+  ],
+  "B": []
 }

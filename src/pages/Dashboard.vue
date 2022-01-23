@@ -10,6 +10,7 @@
       id="fname"
       name="fname"
     /><br /><br />
+    <button >Add this ticker to portfolio</button>
     <!-- <p>{{ list }}</p> -->
     <p>Select portfolio</p>
     <select v-model="PortfolioName">

@@ -1,5 +1,5 @@
 <template>
-  <table class="table" :class="tableClass">
+  <table  class="table" :class="tableClass">
     <thead>
     <slot name="columns">
       <th v-for="column in columns" :key="column">{{column}}</th>
@@ -8,12 +8,12 @@
     <tbody>
     <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
-        <td v-for="(column, index) in columns"
+        <td v-for="(column, index) in columns" 
             :key="index" >
           {{itemValue(item, column)}}
         </td>
       </slot>
-      <button @click:"deleteTicker()">delete</button>
+      <button @click="deleteTicker(item)" >delete</button>
     </tr>
     </tbody>
   </table>
@@ -49,8 +49,8 @@ export default {
     itemValue(item, column) {
       return item[column];
     },
-    DeleteTicker(ticker){
-      this.$parent.deleteTickerfrom(ticker)
+    deleteTicker(item){
+      this.$parent.$parent.deleteTickerfrom(item)
 
     }
   }
