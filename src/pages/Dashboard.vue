@@ -9,9 +9,9 @@
       type="text"
       id="fname"
       name="fname"
+      onclick="this.select()"
     /><br /><br />
-    <button >Add this ticker to portfolio</button>
-    <!-- <p>{{ list }}</p> -->
+    <button @click="addTickerToPortfolioList()">Add this ticker to portfolio</button>
     <p>Select portfolio</p>
     <select v-model="PortfolioName">
             <option selected disabled value="" >Portfolio</option>
@@ -20,7 +20,7 @@
             </option>
     </select>
     <!--Charts-->
-    <TableList :PortfolioName="PortfolioName" />
+    <TableList :PortfolioName="PortfolioName" ref="TableList"/>
     <CandleStick :option="option" />
 
 
@@ -28,19 +28,19 @@
   </div>
 </template>
 <script>
+import EventBus from "@/plugins/EventBus"
 import axios from "axios";
 import { StatsCard, ChartCard, Button } from "@/components/index";
 import TableList from '@/pages/TableList';
 import CandleStick from "./chart/CandleStick.vue";
 
 var today = new Date();
-console.log(today.getDate());
 var todayString =
   today.getFullYear() + "-" + today.getMonth() + 1 + "-" + today.getDate();
 
 var listPortfolio = ["A","B","C","D","E","F","G","H"]
 
-function processData(rawData) {
+function processData(rawData,ticker) {
   console.log("processData");
   let xAxis = [];
   let yAxis = [];
@@ -56,18 +56,144 @@ function processData(rawData) {
   }
   console.log(xAxis);
   return {
-    xAxis: {
-      data: xAxis,
+  title: {
+    text: ticker,
+    left: 0
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross'
+    }
+  },
+  legend: {
+    data: ['View']
+  },
+  grid: {
+    left: '10%',
+    right: '10%',
+    bottom: '15%'
+  },
+  xAxis: {
+    type: 'category',
+    data: xAxis,
+    scale: true,
+    boundaryGap: false,
+    axisLine: { onZero: false },
+    splitLine: { show: false },
+    min: 'dataMin',
+    max: 'dataMax'
+  },
+  yAxis: {
+    scale: true,
+    splitArea: {
+      show: true
+    }
+  },
+  dataZoom: [
+    {
+      type: 'inside',
+      start: 50,
+      end: 100
     },
-    yAxis: {},
-    series: [
-      {
-        type: "candlestick",
-        data: data,
+    {
+      show: true,
+      type: 'slider',
+      top: '90%',
+      start: 50,
+      end: 100
+    }
+  ],
+  series: [
+    {
+      name: 'View',
+      type: 'candlestick',
+      data: data,
+      markPoint: {
+        label: {
+          formatter: function (param) {
+            return param != null ? Math.round(param.value) + '' : '';
+          }
+        },
+        data: [
+          {
+            name: 'Mark',
+            coord: ['2013/5/31', 2300],
+            value: 2300,
+            itemStyle: {
+              color: 'rgb(41,60,85)'
+            }
+          },
+          {
+            name: 'highest value',
+            type: 'max',
+            valueDim: 'highest'
+          },
+          {
+            name: 'lowest value',
+            type: 'min',
+            valueDim: 'lowest'
+          },
+          {
+            name: 'average value on close',
+            type: 'average',
+            valueDim: 'close'
+          }
+        ],
+        tooltip: {
+          formatter: function (param) {
+            return param.name + '<br>' + (param.data.coord || '');
+          }
+        }
       },
-    ],
-  };
-};
+      markLine: {
+        symbol: ['none', 'none'],
+        data: [
+          [
+            {
+              name: 'from lowest to highest',
+              type: 'min',
+              valueDim: 'lowest',
+              symbol: 'circle',
+              symbolSize: 10,
+              label: {
+                show: false
+              },
+              emphasis: {
+                label: {
+                  show: false
+                }
+              }
+            },
+            {
+              type: 'max',
+              valueDim: 'highest',
+              symbol: 'circle',
+              symbolSize: 10,
+              label: {
+                show: false
+              },
+              emphasis: {
+                label: {
+                  show: false
+                }
+              }
+            }
+          ],
+          {
+            name: 'min line on close',
+            type: 'min',
+            valueDim: 'close'
+          },
+          {
+            name: 'max line on close',
+            type: 'max',
+            valueDim: 'close'
+          }
+        ]
+      }
+    }  ]
+}};
 
 export default {
   components: {
@@ -92,8 +218,9 @@ export default {
     };
   },
   created() {
-    console.log("call")
-    console.log(this.list)
+     // Listening the event hello
+    EventBus.$on('table-click', this.tableClickHander);
+    
   },
   compute: {
   },
@@ -133,7 +260,7 @@ export default {
         .then((response) => {
           console.log("set data");
           this.tickerData = response.data;
-          this.option = processData(this.tickerData);
+          this.option = processData(this.tickerData,this.ticker);
           if (this.tickerData.length == 0) {
             alert("ticker not found");
           }
@@ -144,8 +271,15 @@ export default {
       console.log("onEnter");
     },
     addTickerToPortfolioList() {
+      this.$refs.TableList.addTickertoPortfolio(this.ticker,this.PortfolioName)
+
       //query data from database get ticker list
     },
+    tableClickHander(ticker){
+      console.log(`event from paperlist ${ticker}`)
+      // this.ticker = ticker
+      // this.getTickerData
+    }
   },
 };
 </script>

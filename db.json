@@ -1,23 +1,18 @@
 {
   "A": [
     {
-      "id": 1,
+      "id": "ae47058b-1980-425e-98fe-259abcbff791",
       "TickerName": "vnd",
-      "CurrentPrice": "$36.738",
-      "HoldingVolume": 19
-    },
-    {
-      "id": 1,
-      "TickerName": "vnd",
-      "CurrentPrice": "$36.738",
-      "HoldingVolume": 19
-    },
-    {
-      "id": 1,
-      "TickerName": "vnd",
-      "CurrentPrice": "$36.738",
-      "HoldingVolume": 19
+      "CurrentPricer": 0,
+      "HoldingVolume": 0
     }
   ],
-  "B": []
+  "B": [
+    {
+      "id": "9f6b540d-a4ca-42d2-b230-4f1d6932302b",
+      "TickerName": "cll",
+      "CurrentPricer": 0,
+      "HoldingVolume": 0
+    }
+  ]
 }

@@ -8,9 +8,12 @@
     <tbody>
     <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
-        <td v-for="(column, index) in columns" 
-            :key="index" >
-          {{itemValue(item, column)}}
+        <td v-for="(column, idx) in columns" 
+            :key="idx" >
+            <a v-if="column==`id`">{{index}}</a>
+            <a v-else @click="">
+            {{itemValue(item, column)}}
+            </a>
         </td>
       </slot>
       <button @click="deleteTicker(item)" >delete</button>
@@ -19,6 +22,7 @@
   </table>
 </template>
 <script>
+import EventBus from "@/plugins/EventBus"
 export default {
   name: 'paper-table',
   props: {
@@ -37,6 +41,9 @@ export default {
       default: ""
     }
   },
+  created() {
+    this.clickTable()
+  },
   computed: {
     tableClass() {
       return `table-${this.type}`;
@@ -52,6 +59,9 @@ export default {
     deleteTicker(item){
       this.$parent.$parent.deleteTickerfrom(item)
 
+    },
+    clickTable(){
+      EventBus.$emit("table-click","this is the message")
     }
   }
 };

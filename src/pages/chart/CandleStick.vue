@@ -20,6 +20,7 @@ body {
 import { use } from "echarts/core";
 import { CandlestickChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
+import { DataZoomComponent } from 'echarts/components';
 import VChart, { THEME_KEY } from "vue-echarts";
 import {
   TitleComponent,
@@ -28,7 +29,7 @@ import {
 } from "echarts/components";
 import { GridComponent } from "echarts/components";
 
-use([
+use([DataZoomComponent ,
   GridComponent,
   CanvasRenderer,
   CandlestickChart,
