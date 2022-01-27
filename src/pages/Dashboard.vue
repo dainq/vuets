@@ -11,7 +11,7 @@
       name="fname"
       onclick="this.select()"
     /><br /><br />
-    <button @click="addTickerToPortfolioList()">Add this ticker to portfolio</button>
+    <button @click="addTickertoPortfolio()">Add this ticker to portfolio</button>
     <p>Select portfolio</p>
     <select v-model="PortfolioName">
             <option selected disabled value="" >Portfolio</option>
@@ -40,6 +40,21 @@ var todayString =
 
 var listPortfolio = ["A","B","C","D","E","F","G","H"]
 
+function calculateMA(dayCount,data) {
+  var result = [];
+  for (var i = 0, len = data.values.length; i < len; i++) {
+    if (i < dayCount) {
+      result.push('-');
+      continue;
+    }
+    var sum = 0;
+    for (var j = 0; j < dayCount; j++) {
+      sum += +data.values[i - j][1];
+    }
+    result.push(sum / dayCount);
+  }
+  return result;
+}
 function processData(rawData,ticker) {
   console.log("processData");
   let xAxis = [];
@@ -192,8 +207,18 @@ function processData(rawData,ticker) {
           }
         ]
       }
-    }  ]
-}};
+    },
+    {
+      name: 'MA5',
+      type: 'line',
+      data: calculateMA(5,data),
+      smooth: true,
+      lineStyle: {
+        opacity: 0.5
+      }}
+      ]
+  }
+};
 
 export default {
   components: {
@@ -228,6 +253,29 @@ export default {
     searchTicker() {
       return None;
     },
+    validateTicker(){
+
+    },
+    isTickerExist(tickerdata){
+    return this.tickerData.length == 0
+
+
+
+    },
+    isTickerinPortfolio(ticker,portfolio){
+      axios.get(`http://localhost:3000/${portfolio}/`).then((response) => {
+        const tickerlist = response.data.map(element => element["TickerName"])
+        console.log(tickerlist.includes(ticker))
+        if (tickerlist.includes(ticker)){
+          return true;
+        }else{
+          return false;
+        }
+
+      });
+      
+
+    },
     getTickerData() {
       const instance = axios.create({
         withCredentials: true,
@@ -259,19 +307,29 @@ export default {
         )
         .then((response) => {
           console.log("set data");
-          this.tickerData = response.data;
-          this.option = processData(this.tickerData,this.ticker);
-          if (this.tickerData.length == 0) {
+          this.tickerData = response.data
+          if (this.isTickerExist(this.tickerData)) {
             alert("ticker not found");
-          }
+          } else{
+          this.option = processData(this.tickerData,this.ticker);
           console.log(this.option);
+          }
+
         });
     },
     onEnter() {
       console.log("onEnter");
     },
-    addTickerToPortfolioList() {
+    addTickertoPortfolio() {
+      if (this.isTickerExist(this.ticker)){
+        alert("Ticker not exists ")
+
+      } else if (this.isTickerinPortfolio(this.ticker,this.PortfolioName)){
+        alert("Ticker already in portfolio ")
+      }else{
       this.$refs.TableList.addTickertoPortfolio(this.ticker,this.PortfolioName)
+
+      }
 
       //query data from database get ticker list
     },

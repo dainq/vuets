@@ -20,6 +20,7 @@ body {
 import { use } from "echarts/core";
 import { CandlestickChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
+import { LineChart } from 'echarts/charts';
 import { DataZoomComponent } from 'echarts/components';
 import VChart, { THEME_KEY } from "vue-echarts";
 import {
@@ -36,6 +37,7 @@ use([DataZoomComponent ,
   TitleComponent,
   TooltipComponent,
   LegendComponent,
+  LineChart
 ]);
 
 import "echarts/lib/chart/pie";

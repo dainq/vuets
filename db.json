@@ -1,7 +1,7 @@
 {
   "A": [
     {
-      "id": "ae47058b-1980-425e-98fe-259abcbff791",
+      "id": "a1ef6090-61cb-4b54-b143-50317c11ea02",
       "TickerName": "vnd",
       "CurrentPricer": 0,
       "HoldingVolume": 0
@@ -9,8 +9,20 @@
   ],
   "B": [
     {
-      "id": "9f6b540d-a4ca-42d2-b230-4f1d6932302b",
-      "TickerName": "cll",
+      "id": "de9e6047-a81d-4a5f-a40d-8ab80f808e38",
+      "TickerName": "vnm",
+      "CurrentPricer": 0,
+      "HoldingVolume": 0
+    },
+    {
+      "id": "2eb4f8a9-5519-4dd5-8bde-0fd0fe913442",
+      "TickerName": "Vnindexvnd",
+      "CurrentPricer": 0,
+      "HoldingVolume": 0
+    },
+    {
+      "id": "c9fe95bb-2844-48a5-b298-c0f46f721718",
+      "TickerName": "Vnindexvnd",
       "CurrentPricer": 0,
       "HoldingVolume": 0
     }

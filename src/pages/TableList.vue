@@ -42,7 +42,7 @@ export default {
   },
   created() {
     EventBus.$on("click-row")
-    console.log(this.PortfolioName);
+    this.getPortfolioTicker(this.PortfolioName);
   },
   data() {
     return {
