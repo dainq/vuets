@@ -321,6 +321,7 @@ export default {
       console.log("onEnter");
     },
     addTickertoPortfolio() {
+      console.log(this.ticker)
       if (this.isTickerExist(this.ticker)){
         alert("Ticker not exists ")
 

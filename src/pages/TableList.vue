@@ -84,6 +84,7 @@ export default {
         .then(this.reload());
     },
     addTickertoPortfolio(ticker, portfolio) {
+      console.log("trigger")
       const id = uuid();
       console.log(id);
       const newInput = {
@@ -91,10 +92,7 @@ export default {
         TickerName:ticker,
         CurrentPricer:0,
         HoldingVolume:0,
-
-
       }
-      console.log("trigger")
       axios.post(`http://localhost:3000/${portfolio}`,newInput).then(this.reload());
     },
   },
